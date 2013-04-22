@@ -1,0 +1,211 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+flash            0x00000000         0x00080000         xr
+sram             0x40000000         0x00008000         rw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+
+.text           0x00000000     0x1564
+ *start.o(.text)
+ *(.text)
+ .text          0x00000000      0x11c crt.o
+                0x00000000                _start
+ .text          0x0000011c      0x554 main.o
+                0x0000011c                main
+ .text          0x00000670      0x770 video.o
+                0x00000884                video_stop
+                0x00000c10                fiq_handler
+                0x00000670                video_init
+ .text          0x00000de0      0x354 system.o
+                0x00001104                UNDEF_Routine
+                0x00000e0c                led_card_init
+                0x00000e68                led_card
+                0x00001100                SWI_Routine
+                0x000010fc                FIQ_Routine
+                0x00000f60                get_char
+                0x00000de0                led_board_init
+                0x00000e98                delay_ms
+                0x00000f00                delay_ticks
+                0x00001080                feed
+                0x000010f8                IRQ_Routine
+                0x000010a0                enableIRQ
+                0x00000e38                led_board
+                0x000010c4                disableIRQ
+                0x00000f88                Initialize
+ .text          0x00001134      0x430 graphics.o
+                0x000012d0                put_char_arial24
+                0x000014d8                put_char_small
+                0x00001134                put_pixel
+                0x000013d4                put_char_arial16
+                0x000011c8                get_pixel
+                0x000011cc                put_char_arial32
+ *(.glue_7t)
+ *(.glue_7)
+                0x00001564                . = ALIGN (0x4)
+
+.rodata         0x00001564     0x2cee
+ *(.rodata)
+ .rodata        0x00001564     0x2cee graphics.o
+                0x00003508                arial24Width
+                0x00001744                arial32Width
+                0x00001864                arial32
+                0x00002e60                arial16Width
+                0x00001564                characters
+                0x000017a4                arial32Offset
+                0x00002ec0                arial16Offset
+                0x00003568                arial24Offset
+                0x00002f80                arial16
+                0x00003628                arial24
+                0x00004254                . = ALIGN (0x4)
+                0x00004254                _etext = .
+                0x00004254                PROVIDE (etext, .)
+
+.data           0x40000000        0x8 load address 0x00004254
+                0x40000000                _data = .
+ *(.data)
+ .data          0x40000000        0x8 video.o
+                0x40000000                syncOn
+                0x40000004                syncOff
+                0x40000008                . = ALIGN (0x4)
+                0x40000008                _edata = .
+                0x40000008                PROVIDE (edata, .)
+
+.bss            0x40000008     0x200c
+                0x40000008                _bss = .
+ *(.bss)
+ .bss           0x40000008     0x200c video.o
+                0x40000014                imageArray
+                0x40000008                lineCount
+                0x4000000c                imageVindex
+ *(COMMON)
+                0x40002014                . = ALIGN (0x4)
+                0x40002014                _ebss = .
+                0x40002014                _end = .
+                0x40002014                PROVIDE (end, .)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x00000000       0x48
+ *(.comment)
+ .comment       0x00000000       0x12 main.o
+ .comment       0x00000012       0x12 video.o
+ .comment       0x00000024       0x12 system.o
+ .comment       0x00000036       0x12 graphics.o
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000       0x80
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 main.o
+ .debug_aranges
+                0x00000020       0x20 video.o
+ .debug_aranges
+                0x00000040       0x20 system.o
+ .debug_aranges
+                0x00000060       0x20 graphics.o
+
+.debug_pubnames
+                0x00000000      0x2ae
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000       0x1b main.o
+ .debug_pubnames
+                0x0000001b       0x84 video.o
+ .debug_pubnames
+                0x0000009f       0xf3 system.o
+ .debug_pubnames
+                0x00000192      0x11c graphics.o
+
+.debug_info     0x00000000      0x8b3
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x00000000       0xd3 main.o
+ .debug_info    0x000000d3      0x107 video.o
+ .debug_info    0x000001da      0x262 system.o
+ .debug_info    0x0000043c      0x477 graphics.o
+
+.debug_abbrev   0x00000000      0x31b
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000       0xa0 main.o
+ .debug_abbrev  0x000000a0       0x84 video.o
+ .debug_abbrev  0x00000124      0x11d system.o
+ .debug_abbrev  0x00000241       0xda graphics.o
+
+.debug_line     0x00000000      0x278
+ *(.debug_line)
+ .debug_line    0x00000000       0x8c main.o
+ .debug_line    0x0000008c       0xa8 video.o
+ .debug_line    0x00000134       0x84 system.o
+ .debug_line    0x000001b8       0xc0 graphics.o
+
+.debug_frame    0x00000000      0x314
+ *(.debug_frame)
+ .debug_frame   0x00000000       0x34 main.o
+ .debug_frame   0x00000034       0x88 video.o
+ .debug_frame   0x000000bc      0x16c system.o
+ .debug_frame   0x00000228       0xec graphics.o
+
+.debug_str      0x00000000      0x2d9
+ *(.debug_str)
+ .debug_str     0x00000000       0x88 main.o
+                                 0x95 (size before relaxing)
+ .debug_str     0x00000088       0x81 video.o
+                                 0xdd (size before relaxing)
+ .debug_str     0x00000109       0xe9 system.o
+                                0x162 (size before relaxing)
+ .debug_str     0x000001f2       0xe7 graphics.o
+                                0x199 (size before relaxing)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+LOAD crt.o
+LOAD main.o
+LOAD video.o
+LOAD system.o
+LOAD graphics.o
+OUTPUT(main.out elf32-littlearm)
